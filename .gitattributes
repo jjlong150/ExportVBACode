@@ -1,2 +1,35 @@
-# Auto detect text files and perform LF normalization
+# ------------------------------------------------------------------
+# Default: auto-detect text files and normalize them to LF in the repo
+# ------------------------------------------------------------------
 * text=auto
+
+# Later rules override the default above for the files they match.
+
+# ------------------------------------------------------------------
+# VBA source exported from the VBA editor
+# ------------------------------------------------------------------
+# -text stores the files exactly as exported (CRLF, ANSI code page).
+# With text=auto, Git would store LF in the repo, and GitHub's raw/download
+# links serve that LF version. The VBA editor mis-reads LF-only files on
+# Import (Attribute lines end up as code), so downloaded modules would no
+# longer import cleanly.
+#
+# linguist-language makes GitHub highlight these as VBA. Without it,
+# .cls files are often detected as TeX class files.
+*.bas -text linguist-language=VBA
+*.cls -text linguist-language=VBA
+*.frm -text linguist-language=VBA
+
+# Binary companion to each .frm (control properties, images, list data).
+# Required to import the form, so keep it alongside the .frm.
+*.frx binary
+
+# ------------------------------------------------------------------
+# Excel workbooks
+# ------------------------------------------------------------------
+*.xlsm binary
+*.xlsx binary
+*.xlsb binary
+*.xlam binary
+*.xltm binary
+*.xls  binary
